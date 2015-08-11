@@ -12,6 +12,27 @@ function neutron_plugin_setup_interface_driver {
     :
 }
 
+function neutron_plugin_configure_common {
+    Q_PLUGIN_CONF_PATH=etc/neutron/plugins/plumgrid
+    Q_PLUGIN_CONF_FILENAME=plumgrid.ini
+    Q_PLUGIN_CLASS="neutron.plugins.plumgrid.plumgrid_plugin.plumgrid_plugin.NeutronPluginPLUMgridV2"
+    PLUMGRID_DIRECTOR_IP=${PLUMGRID_DIRECTOR_IP:-localhost}
+    PLUMGRID_DIRECTOR_PORT=${PLUMGRID_DIRECTOR_PORT:-7766}
+    PLUMGRID_ADMIN=${PLUMGRID_ADMIN:-username}
+    PLUMGRID_PASSWORD=${PLUMGRID_PASSWORD:-password}
+    PLUMGRID_TIMEOUT=${PLUMGRID_TIMEOUT:-70}
+    PLUMGRID_DRIVER=${PLUMGRID_DRIVER:-neutron.plugins.plumgrid.drivers.fake_plumlib.Plumlib}
+}
+
+function neutron_plugin_configure_service {
+    iniset /$Q_PLUGIN_CONF_FILE plumgriddirector director_server $PLUMGRID_DIRECTOR_IP
+    iniset /$Q_PLUGIN_CONF_FILE plumgriddirector director_server_port $PLUMGRID_DIRECTOR_PORT
+    iniset /$Q_PLUGIN_CONF_FILE plumgriddirector username $PLUMGRID_ADMIN
+    iniset /$Q_PLUGIN_CONF_FILE plumgriddirector password $PLUMGRID_PASSWORD
+    iniset /$Q_PLUGIN_CONF_FILE plumgriddirector servertimeout $PLUMGRID_TIMEOUT
+    iniset /$Q_PLUGIN_CONF_FILE plumgriddirector driver $PLUMGRID_DRIVER
+}
+
 function configure_plumgrid_plugin {
     echo "Configuring Neutron for PLUMgrid"
 
