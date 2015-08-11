@@ -13,27 +13,25 @@
 #    under the License.
 
 """
-Neutron Plug-in for PLUMgrid Virtual Networking Infrastructure (VNI)
-This plugin will forward authenticated REST API calls
-to the PLUMgrid Network Management System called Director
+Proxy Routines to link to PLUMgrid Library
 """
 
-from plumgridlib import plumlib
-
 from neutron.i18n import _LI
-from neutron.openstack.common import log as logging
+from oslo_log import log as logging
+from plumgridlib import plumlib
 
 LOG = logging.getLogger(__name__)
 
 
 class Plumlib(object):
-    """
-    Class PLUMgrid Python Library. This library is a third-party tool
+    """Class PLUMgrid Python Library.
+
+    This library is a third-party tool
     needed by PLUMgrid plugin to implement all core API in Neutron.
     """
 
     def __init__(self):
-        LOG.info(_LI('Python PLUMgrid Library Started '))
+        LOG.info(_LI('Python PLUMgrid Library Proxy Started '))
 
     def director_conn(self, director_plumgrid, director_port, timeout,
                       director_admin, director_password):
@@ -46,8 +44,8 @@ class Plumlib(object):
     def create_network(self, tenant_id, net_db, network):
         self.plumlib.create_network(tenant_id, net_db, network)
 
-    def update_network(self, tenant_id, net_id):
-        self.plumlib.update_network(tenant_id, net_id)
+    def update_network(self, tenant_id, net_id, network):
+        self.plumlib.update_network(tenant_id, net_id, network)
 
     def delete_network(self, net_db, net_id):
         self.plumlib.delete_network(net_db, net_id)
